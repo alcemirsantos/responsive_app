@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:responsive_app/screens/pagina_inicial.dart';
+
+import 'core/selecao.dart';
 
 void main() {
   runApp(
@@ -18,7 +21,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const PaginaInicial(),
+      home: ListenableProvider(
+        create: (_) => SelecaoDeContato(),
+        child: const PaginaInicial(),
+      ),
     );
   }
 }

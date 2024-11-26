@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:responsive_app/models/contato.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import '../core/selecao.dart';
 import '../screens/widgets/detalhes_contato.dart';
 import 'widgets/lista_contatos.dart';
 
@@ -33,34 +35,29 @@ class PaginaInicialPortrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Lista de Contatos'),
-      ),
+      appBar: AppBar(title: const Text('Lista de Contatos')),
       body: ListaDeContatos(
-        onContatoTap: (contatoSelecionado) => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Scaffold(
-              appBar: AppBar(),
-              body: DetalhesContato(
-                contato: contatoSelecionado,
+        onContatoTap: (contatoSelecionado) {
+          Provider.of<SelecaoDeContato>(context, listen: false)
+              .atualizarSelecao(contatoSelecionado);
+
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                appBar: AppBar(),
+                body: const DetalhesContato(),
               ),
+              settings: RouteSettings(arguments: contatoSelecionado),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
 
-class PaginaInicialLandscape extends StatefulWidget {
-  const PaginaInicialLandscape({Key? key}) : super(key: key);
-
-  @override
-  State<PaginaInicialLandscape> createState() => _PaginaInicialLandscapeState();
-}
-
-class _PaginaInicialLandscapeState extends State<PaginaInicialLandscape> {
-  Contato? _contatoSelecionado;
+class PaginaInicialLandscape extends StatelessWidget {
+  const PaginaInicialLandscape({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +69,15 @@ class _PaginaInicialLandscapeState extends State<PaginaInicialLandscape> {
               flex: 1,
               fit: FlexFit.tight,
               child: ListaDeContatos(
-                onContatoTap: (contato) {
-                  setState(() {
-                    _contatoSelecionado = contato;
-                  });
+                onContatoTap: (contatoSelecionado) {
+                  Provider.of<SelecaoDeContato>(context, listen: false)
+                      .atualizarSelecao(contatoSelecionado);
                 },
               ),
             ),
             Flexible(
               flex: 2,
-              child: DetalhesContato(
-                contato: _contatoSelecionado,
-              ),
+              child: DetalhesContato(),
             ),
           ],
         ),
