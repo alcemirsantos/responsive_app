@@ -22,6 +22,7 @@ class PaginaInicial extends StatelessWidget {
         landscape: (context) => const PaginaInicialLandscape(),
       ),
       tablet: const PaginaInicialTablet(),
+      desktop: const PaginaInicialTablet(),
     );
   }
 }
